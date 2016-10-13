@@ -18,13 +18,15 @@ double readAnalogPin(int pinNumber){
 }
 
 void writeDigitalPin(int pinNumber, int value){
-	cout << "Wrote " << value << " to pin " << pinNumber << '\n'; //*
+	//cout << "Wrote " << value << " to pin " << pinNumber << '\n'; //*
 	// write to digital pin
 }
 
 void switchMux(int muxSelect, int muxState){
-	cout << "Switched mux " << muxSelect << " to state " << muxState << '\n'; //*
-	// switch mux channel
+	if (muxState != NO_MUX){
+		cout << "Switched mux " << muxSelect << " to state " << muxState << '\n'; //*
+		// switch mux channel
+	}
 }
 
 double convert_5V(int val){

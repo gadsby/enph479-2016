@@ -4,13 +4,13 @@
 #include <stdlib.h>
 #include <deque>
 #include <numeric>
-#include "settings.h"
+//#include "settings.h"
 using namespace std;
 
 
 class sensor {
 	public:
-		sensor(const std::string name, const std::string type, const int pin, const int muxChan);
+		sensor(const std::string name, const std::string type, const int pinRead, const int muxChan);
 		void update(void);
 		double nowVal(void);
 		double avgVal(void);
@@ -18,16 +18,16 @@ class sensor {
 	private:
 		std::string name;
 		std::string type;
-		int pin;
+		int pinRead;
 		int muxChan;
 		deque<double> history;
 		int readCount;
 };
 
-	sensor::sensor(std::string nameIn, std::string typeIn, int pinIn, int muxIn){
+	sensor::sensor(std::string nameIn, std::string typeIn, int pinReadIn, int muxIn){
 		name = nameIn;
 		type = typeIn;
-		pin = pinIn;
+		pinRead = pinReadIn;
 		muxChan = muxIn;
 		readCount = 0;
 		for (int i=0; i < HISTORY_LEN; i++){

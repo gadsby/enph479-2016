@@ -3,5 +3,5 @@ INC_DIR=./headers
 CFLAGS=-Wall -I$(INC_DIR) -std=c++11
 
 
-barebones: barebones.cpp
+main: main.cpp
 	$(CC) -o $@ $^ $(CFLAGS)

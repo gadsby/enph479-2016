@@ -2,6 +2,8 @@
 #include <string>
 #include "headers/pump.h"
 #include "headers/sensor.h"
+#include "headers/sensorList.h"
+#include "headers/stateFuncs.h"
 #include "headers/settings.h"
 using namespace std;
 
@@ -27,7 +29,43 @@ int main() {
 	}
 
 	// SENSOR LIST
-	// TODO
+	cout << "Testing sensorList class:" << '\n';
+	voltSensors volts;
+	tempSensors temps;
+	currSensor curr;
+
+	vector<double> nowVals_V;
+	vector<double> nowVals_T;
+	vector<double> nowVals_C;
+
+	for (int i = 0; i < 15; i++){
+		volts.update();
+		temps.update();
+		curr.update();
+
+		nowVals_V = volts.nowVals();
+		cout << "V Values: " << '\n';
+		for (int i = 0; i < nowVals_V.size(); i++){
+			cout << nowVals_V.at(i) << '	';
+		}
+		cout << '\n';
+
+		nowVals_T = temps.nowVals();
+		cout << "T Values: " << '\n';
+		for (int i = 0; i < nowVals_T.size(); i++){
+			cout << nowVals_T.at(i) << '	';
+		}
+		cout << '\n';
+
+		nowVals_C = curr.nowVals();
+		cout << "C Values: " << '\n';
+		for (int i = 0; i < nowVals_C.size(); i++){
+			cout << nowVals_C.at(i) << '	';
+		}
+		cout << '\n';
+
+	}
+
 
 
 }

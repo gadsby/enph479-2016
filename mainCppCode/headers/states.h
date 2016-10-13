@@ -2,18 +2,20 @@
 #define STATES_H
 
 #include <stdlib.h>
-#include "headers/settings.h"
+#include <unistd.h>
+#include "settings.h"
+#include "stateFuncs.h"
 using namespace std;
 
 
-int normalState(void);
-int chargeState(void);
-int standbyState(void);
-int safetyState(void);
+int normalState(voltSensors volts, tempSensors temps, currSensor curr, pumpObj pump);
+int chargeState(voltSensors volts, tempSensors temps, currSensor curr, pumpObj pump);
+int standbyState(voltSensors volts, tempSensors temps, currSensor curr, pumpObj pump);
+int safetyState(voltSensors volts, tempSensors temps, currSensor curr, pumpObj pump);
 
 
 // STATES
-int normalState(void){ //*
+int normalState(voltSensors volts, tempSensors temps, currSensor curr, pumpObj pump){ //*
 
 	//while(true){
 	for (int i = 0; i < 5; i++){
@@ -27,19 +29,19 @@ int normalState(void){ //*
 }
 
 
-int chargeState(void){
+int chargeState(voltSensors volts, tempSensors temps, currSensor curr, pumpObj pump){
 
 	return NORMAL;
 
 }
 
-int standbyState(void){
+int standbyState(voltSensors volts, tempSensors temps, currSensor curr, pumpObj pump){
 
 	return NORMAL;
 	
 }
 
-int safetyState(void){
+int safetyState(voltSensors volts, tempSensors temps, currSensor curr, pumpObj pump){
 
 	return NORMAL;
 	

@@ -2,39 +2,66 @@
 #define STATE_FUNCS_H
 
 #include <stdlib.h>
-#include "headers/settings.h"
+#include "settings.h"
 using namespace std;
 
 
-void updateVals(volts, temps, curr);
-void checkVoltageCondition(volts);
-void checkTemperatureCondition(temps, pump);
-void checkCurrentCondition(curr);
+bool anyCond(vector<double> inVect, double condition, bool greater);
+void updateVals(voltSensors volts, tempSensors temps, currSensor curr);
+void checkVoltageCondition(voltSensors volts);
+void checkTemperatureCondition(tempSensors temps, pumpObj pump);
+void checkCurrentCondition(currSensor curr);
+
+
+
+bool anyCond(vector<double> inVect, double condition, bool greater){
+
+	if (greater){
+		for (int i = 0; i < inVect.size(); i++){
+			if (inVect.at(i) > condition)
+				return true;}
+		return false;
+
+	} else {
+		for (int i = 0; i < inVect.size(); i++){
+			if (inVect.at(i) < condition)
+				return true;}
+		return false;
+	}
+
+}
+
+
+
+
+
 
 
 // FUNCTIONS - NORMAL STATE
-void updateVals(volts, temps, curr){ //*
+void updateVals(voltSensors volts, tempSensors temps, currSensor curr){
 	volts.update();
 	temps.update();
 	curr.update();
 }
 
-void checkVoltageCondition(volts){ //*
-	bool belowMin_V = any(voltage < v_min_thresh for voltage in volts.nowVals())
-	if (belowMin_V == true){
+void checkVoltageCondition(voltSensors volts){
+
+	bool belowMin_V = anyCond(volts.nowVals(), V_MIN, false);
+
+	if (belowMin_V){
 		cout << "Voltage too low, shutting down" << '\n';
 	}
 }
 
-void checkTemperatureCondition(temps, pump){ //*
+void checkTemperatureCondition(tempSensors temps, pumpObj pump){
 
-	bool belowMin_T = any( temperature < T_MIN for temperature in temps.nowVals() ) //*
-	bool aboveMax_T = any( temperature > T_MAX for temperature in temps.nowVals() ) //*
+	bool belowMin_T = anyCond(temps.nowVals(), V_MIN, false);
+	bool aboveMax_T = anyCond(temps.nowVals(), T_MAX, true);
 
-	if (belowMin_T == true){
+	if (belowMin_T){
 		pump.setPump(P_OFF);
 
-	} else if (aboveMax_T == true){
+	} else if (aboveMax_T){
 		cout << "Temperature too high, shutting down" << '\n';
 		// shut off system
 
@@ -44,11 +71,11 @@ void checkTemperatureCondition(temps, pump){ //*
 
 }
 
-void checkCurrentCondition(curr){ //*
+void checkCurrentCondition(currSensor curr){
 
-	bool aboveMax_C = any( current > c_max_thresh for current in curr.nowVals() ) //*
+	bool aboveMax_C = anyCond(curr.nowVals(), C_MAX, true);
 
-	if (aboveMax_C == true){
+	if (aboveMax_C){
 		cout << "Current too high, shutting down" << '\n';
 		// shut off system
 	}
