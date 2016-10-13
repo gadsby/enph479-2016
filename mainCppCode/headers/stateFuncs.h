@@ -6,36 +6,53 @@
 using namespace std;
 
 
-// ALL STILL PYTHONIC; NEED TO CHANGE TO C++
+void updateVals(volts, temps, curr);
+void checkVoltageCondition(volts);
+void checkTemperatureCondition(temps, pump);
+void checkCurrentCondition(curr);
 
 
 // FUNCTIONS - NORMAL STATE
-void updateVals(volts, temps, curr){
-	volts.update()
-	temps.update()
-	curr.update()
+void updateVals(volts, temps, curr){ //*
+	volts.update();
+	temps.update();
+	curr.update();
 }
 
-void checkVoltageCondition(volts){
-	if any(voltage < v_min_thresh for voltage in volts.nowVals()):
-		print('Voltage too low, shutting down')
+void checkVoltageCondition(volts){ //*
+	bool belowMin_V = any(voltage < v_min_thresh for voltage in volts.nowVals())
+	if (belowMin_V == true){
+		cout << "Voltage too low, shutting down" << '\n';
+	}
 }
 
-void checkTemperatureCondition(temps, pump){
-	belowMin = any( temperature < t_min_thresh for temperature in temps.nowVals() )
-	aboveMax = any( temperature > t_max_thresh for temperature in temps.nowVals() )
+void checkTemperatureCondition(temps, pump){ //*
 
-	if belowMin:
-		pump.setPump(OFF)
-	elif aboveMax:
-		print('Temperature too high, shutting down')
-	else:
-		pump.setPump(MID)
+	bool belowMin_T = any( temperature < T_MIN for temperature in temps.nowVals() ) //*
+	bool aboveMax_T = any( temperature > T_MAX for temperature in temps.nowVals() ) //*
+
+	if (belowMin_T == true){
+		pump.setPump(P_OFF);
+
+	} else if (aboveMax_T == true){
+		cout << "Temperature too high, shutting down" << '\n';
+		// shut off system
+
+	} else {
+		pump.setPump(P_LOW);
+	}
+
 }
 
-void checkCurrentCondition(curr){
-	if any(current > c_max_thresh for current in curr.nowVals()):
-		print('Current too high, shutting down')
+void checkCurrentCondition(curr){ //*
+
+	bool aboveMax_C = any( current > c_max_thresh for current in curr.nowVals() ) //*
+
+	if (aboveMax_C == true){
+		cout << "Current too high, shutting down" << '\n';
+		// shut off system
+	}
+
 }
 
 

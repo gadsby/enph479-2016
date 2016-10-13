@@ -4,35 +4,40 @@
 #include <stdlib.h>
 #include <deque>
 #include <numeric>
+#include "settings.h"
 using namespace std;
 
 
 class sensor {
 	public:
-		sensor(const std::string name, const std::string type, const int pin); // Constructor
+		sensor(const std::string name, const std::string type, const int pin, const int muxChan);
 		void update(void);
 		double nowVal(void);
 		double avgVal(void);
 
 	private:
-		static int const numPoints2keep = 10;
 		std::string name;
 		std::string type;
 		int pin;
+		int muxChan;
 		deque<double> history;
 		int readCount;
 };
 
-	sensor::sensor(std::string nameIn, std::string typeIn, int pinIn){
+	sensor::sensor(std::string nameIn, std::string typeIn, int pinIn, int muxIn){
 		name = nameIn;
 		type = typeIn;
 		pin = pinIn;
-		history = {0,0,0,0,0,0,0,0,0,0}; // FIX make size based on numPoints2keep
+		muxChan = muxIn;
 		readCount = 0;
+		for (int i=0; i < HISTORY_LEN; i++){
+			history.push_back(0);
+		}
 	}
 
 	void sensor::update(void){
-		int readVal = readPin(pin); // FIX actually want to readPin(pin) when complete
+		switchMux(PIN_SELECT_SENSOR_MUX, muxChan);
+		int readVal = readAnalogPin(PIN_READ_SENSOR_MUX);
 		history.pop_front();
 		history.push_back(readVal); 
 		readCount++;
@@ -54,10 +59,10 @@ class sensor {
 				sumHist += history.at(i);
 			}
 
-			if (readCount < numPoints2keep){
+			if (readCount < HISTORY_LEN){
 				return sumHist/readCount;
 			} else {
-				return sumHist/numPoints2keep;
+				return sumHist/HISTORY_LEN;
 			}
 		}
 	}

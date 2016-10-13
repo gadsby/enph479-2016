@@ -1,0 +1,4 @@
+1. Make global variable that holds current mux state for each mux
+	Only transition if mux state is different
+
+2. States: pass in objects directly or use globals?

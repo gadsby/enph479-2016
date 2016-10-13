@@ -5,8 +5,15 @@
 #include "headers/settings.h"
 using namespace std;
 
+
+int normalState(void);
+int chargeState(void);
+int standbyState(void);
+int safetyState(void);
+
+
 // STATES
-int normalState(void){ // still pythonic
+int normalState(void){ //*
 
 	//while(true){
 	for (int i = 0; i < 5; i++){

@@ -4,41 +4,34 @@
 #include "headers/settings.h"
 #include "headers/states.h"
 #include "headers/stateFuncs.h"
-#include "hardwareInterfacing.h"
+#include "headers/hardwareInterfacing.h"
 using namespace std;
 
 
 int main() {
 
-	// Initialization (TODO: still pythonic)
-	volts = cd.voltSensors(14);
-	temps = cd.tempSensors(10);
-	curr  = cd.currSensor();
-	pump  = cd.pumpObj(OFF);
-	state = NORMAL;
-
-
+	// Initialization
+	int state = NORMAL;
+	voltSensors volts();
+	tempSensors temps();
+	currSensor curr();
+	pumpObj pump(P_OFF);
 
 	// Main Loop
 	while(true){
 		switch(state){
-
 			case NORMAL:
 				state = normalState();
 				break;
-
 			case CHARGING:
 				state = chargeState();
 				break;
-
 			case STANDBY:
 				state = standbyState();
 				break;
-
 			case SAFETY:
 				state = safetyState();
 				break;
-
 		}
 	}
 }
